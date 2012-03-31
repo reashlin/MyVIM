@@ -1,36 +1,51 @@
-set background=dark
+set tabstop=4       " way too wide for my liking
+set shiftwidth=4    " match the tabstop for ease of use
+set hlsearch        " so I can see what I'm searching for
+set incsearch       " auto scroll to the search item as I type
+set nowrap
+"set number         " where am I in the file?
+set scrolloff=999   " Keep the cursor at the center of the screen
 set expandtab
-set number
 set ruler
 set showmatch
 set tabpagemax=50
-set incsearch
-set hlsearch
 set spellfile=~/.vim/dict.add
-set so=999
 
 set tag=tags
+
 
 filetype plugin on
 filetype indent on
 
-syntax on
-colorscheme redblack
+source ~/.vim/plugin/matchit.vim
 
-" ^N for NERDTree
+
+syntax on               " purdy highlights
+colorscheme redblack    " with purdy colours
+
+filetype plugin on  " Auto-detect files for highlighting and sexyness
+filetype indent on  " And tidy my code up - at least someone is
+
+set tags=~/.tags
+
+let perl_fold = 1
+let perl_fold_block = 1
+
+" ^N to get NERDTree up
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 
-" ^M for Tlist
-nmap <silent> <c-m> :TlistToggle<CR>
+" ^M to get Tlist
+nmap <silent> <c-b> :TlistToggle<CR>
 
-" Useful space bar
+" useful space bar
 map <space> 10j
+map <s-space> 10k
 
 " \t to target the cursor
 " \c to highlight the current column
 " \l to highlight the current line
-" :hi CursorLine   cterm=NONE ctermbg=darkred guibg=darkred
-" :hi CursorColumn cterm=NONE ctermbg=darkred guibg=darkred
+:hi CursorLine   cterm=NONE ctermbg=darkred guibg=darkred
+:hi CursorColumn cterm=NONE ctermbg=darkred guibg=darkred
 :nnoremap <Leader>t :set cursorline! cursorcolumn!<CR>
 :nnoremap <Leader>c :set cursorcolumn!<CR>
 :nnoremap <Leader>l :set cursorline!<CR>
@@ -44,5 +59,57 @@ nmap <s-tab> ^i<bs><esc>
 
 " Yell when lines get too long
 highlight OverLength ctermbg=red ctermfg=white
-match OverLength '\%>80v.\+'
+highlight DirtyWhitespace ctermbg=red ctermfg=white
+match OverLength /\%81v.\+/
+match DirtyWhitespace /\s\+$/
+
+" Hopefully this will stop us getting into too much trouble
+"let g:easytags_resolve_links = 1
+" Sadly easytags proved less that useful - now stick to a fixed tags file
+
+set pastetoggle=<F2>
+
+function MoveToPrevTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() != 1
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabprev
+    endif
+    sp
+  else
+    close!
+    exe "0tabnew"
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
+
+function MoveToNextTab()
+  "there is only one window
+  if tabpagenr('$') == 1 && winnr('$') == 1
+    return
+  endif
+  "preparing new window
+  let l:tab_nr = tabpagenr('$')
+  let l:cur_buf = bufnr('%')
+  if tabpagenr() < tab_nr
+    close!
+    if l:tab_nr == tabpagenr('$')
+      tabnext
+    endif
+    sp
+  else
+    close!
+    tabnew
+  endif
+  "opening current buffer in new window
+  exe "b".l:cur_buf
+endfunc
 
