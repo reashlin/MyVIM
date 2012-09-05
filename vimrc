@@ -13,12 +13,10 @@ set spellfile=~/.vim/dict.add
 
 set tag=tags
 
-
 filetype plugin on
 filetype indent on
 
 source ~/.vim/plugin/matchit.vim
-
 
 syntax on               " purdy highlights
 colorscheme redblack    " with purdy colours
@@ -27,6 +25,8 @@ filetype plugin on  " Auto-detect files for highlighting and sexyness
 filetype indent on  " And tidy my code up - at least someone is
 
 set tags=~/.tags
+
+let g:vimwiki_list = [{'path': '~/.vimwiki/'}]
 
 let perl_fold = 1
 let perl_fold_block = 1
@@ -58,10 +58,10 @@ nmap <s-tab> ^i<bs><esc>
 :nnoremap <silent> <Leader>m ml:execute 'match Search /\%'.line('.').'l/'<CR>
 
 " Yell when lines get too long
-highlight OverLength ctermbg=red ctermfg=white
-highlight DirtyWhitespace ctermbg=red ctermfg=white
-match OverLength /\%81v.\+/
-match DirtyWhitespace /\s\+$/
+autocmd ColorScheme * highlight OverLength ctermbg=red ctermfg=white
+autocmd ColorScheme * highlight DirtyWhitespace ctermbg=red ctermfg=white
+autocmd ColorScheme * match OverLength /\%81v.\+/
+autocmd ColorScheme * match DirtyWhitespace /\s\+$/
 
 " Hopefully this will stop us getting into too much trouble
 "let g:easytags_resolve_links = 1
