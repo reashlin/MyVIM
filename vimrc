@@ -44,11 +44,13 @@ map <s-space> 10k
 " \t to target the cursor
 " \c to highlight the current column
 " \l to highlight the current line
-:hi CursorLine   cterm=NONE ctermbg=darkred guibg=darkred
-:hi CursorColumn cterm=NONE ctermbg=darkred guibg=darkred
-:nnoremap <Leader>t :set cursorline! cursorcolumn!<CR>
-:nnoremap <Leader>c :set cursorcolumn!<CR>
-:nnoremap <Leader>l :set cursorline!<CR>
+hi CursorLine   cterm=NONE ctermbg=darkred guibg=darkred
+hi CursorColumn cterm=NONE ctermbg=darkred guibg=darkred
+nnoremap <Leader>t :set cursorline! cursorcolumn!<CR>
+nnoremap <Leader>c :set cursorcolumn!<CR>
+nnoremap <Leader>l :set cursorline!<CR>
+
+nnoremap <Leader>p :lcd %:p:h <CR> :!install_template % <CR> :!clrsmarty <CR>
 
 " make tab in command mode ident code
 nmap <tab> I<tab><esc>
